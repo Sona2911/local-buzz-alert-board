@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,9 +13,15 @@ import {
 } from "@/components/ui/select";
 import { MapPin, Image, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAlerts } from "@/contexts/AlertContext";
 
-export const AlertSubmission = () => {
+interface AlertSubmissionProps {
+  onAlertSubmitted: () => void;
+}
+
+export const AlertSubmission = ({ onAlertSubmitted }: AlertSubmissionProps) => {
   const { toast } = useToast();
+  const { addAlert } = useAlerts();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -37,10 +42,18 @@ export const AlertSubmission = () => {
       return;
     }
 
-    // Mock submission - in real app this would send to backend
+    // Add the alert to the global state
+    addAlert({
+      title: formData.title,
+      description: formData.description,
+      category: formData.category,
+      location: formData.location,
+      severity: formData.severity
+    });
+
     toast({
       title: "Alert Submitted!",
-      description: "Your alert has been submitted and will be reviewed by moderators.",
+      description: "Your alert has been added to the community board.",
     });
 
     // Reset form
@@ -51,6 +64,9 @@ export const AlertSubmission = () => {
       location: "",
       severity: "medium"
     });
+
+    // Switch to alert board tab
+    onAlertSubmitted();
   };
 
   const handleInputChange = (field: string, value: string) => {

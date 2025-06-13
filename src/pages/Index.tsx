@@ -9,6 +9,10 @@ import { Header } from "@/components/Header";
 const Index = () => {
   const [activeTab, setActiveTab] = useState("board");
 
+  const handleAlertSubmitted = () => {
+    setActiveTab("board");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Header />
@@ -45,7 +49,7 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="submit" className="space-y-4">
-            <AlertSubmission />
+            <AlertSubmission onAlertSubmitted={handleAlertSubmitted} />
           </TabsContent>
         </Tabs>
       </main>

@@ -1,79 +1,16 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { AlertCard } from "@/components/AlertCard";
 import { AlertFilters } from "@/components/AlertFilters";
-
-// Mock data for initial display
-const mockAlerts = [
-  {
-    id: "1",
-    title: "Power Outage on Maple Street",
-    description: "Power has been out for the past 2 hours. Estimated repair time: 4 hours",
-    category: "utilities",
-    location: "Maple Street, Block 200-300",
-    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-    status: "active",
-    severity: "high",
-    upvotes: 12
-  },
-  {
-    id: "2", 
-    title: "Missing Cat - Orange Tabby",
-    description: "Missing since yesterday evening. Very friendly, responds to 'Whiskers'. Please call if seen.",
-    category: "animals",
-    location: "Oak Avenue area",
-    timestamp: new Date(Date.now() - 18 * 60 * 60 * 1000), // 18 hours ago
-    status: "active", 
-    severity: "medium",
-    upvotes: 8
-  },
-  {
-    id: "3",
-    title: "Road Closure - Construction",
-    description: "Pine Street will be closed between 1st and 3rd Avenue for water main repair until Friday.",
-    category: "traffic",
-    location: "Pine Street",
-    timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
-    status: "active",
-    severity: "medium", 
-    upvotes: 5
-  },
-  {
-    id: "4",
-    title: "Community Cleanup Event",
-    description: "Join us this Saturday at 9 AM for our monthly neighborhood cleanup. Coffee and donuts provided!",
-    category: "community",
-    location: "Community Center",
-    timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000), // 12 hours ago
-    status: "active",
-    severity: "low",
-    upvotes: 15
-  }
-];
+import { useAlerts } from "@/contexts/AlertContext";
 
 export const AlertBoard = () => {
-  const [alerts] = useState(mockAlerts);
-  const [filteredAlerts, setFilteredAlerts] = useState(mockAlerts);
+  const { filteredAlerts, updateFilters } = useAlerts();
 
   const handleFilterChange = (filters: any) => {
-    let filtered = alerts;
-    
-    if (filters.category && filters.category !== "all") {
-      filtered = filtered.filter(alert => alert.category === filters.category);
-    }
-    
-    if (filters.severity && filters.severity !== "all") {
-      filtered = filtered.filter(alert => alert.severity === filters.severity);
-    }
-    
-    if (filters.status && filters.status !== "all") {
-      filtered = filtered.filter(alert => alert.status === filters.status);
-    }
-    
-    setFilteredAlerts(filtered);
+    updateFilters(filters);
   };
 
   return (
